@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>Document</title>
+</head>
+<body>
+  <video id="my_video" src="" autoplay=""></video>
+  <img id="photo" src="img/img.jpg" alt="">
+  <canvas id="canvas"></canvas>
+</body>
+
+<script>
+  var canvas =document.getElementById("canvas");
+  var ctx = canvas.getContext("2d");
+  var photo = document.getElementById("photo");
+
+  var video = document.getElementById("my_video");
+  navigator.webkitGetUserMedia( { video:true, audio:true},
+    function(stream) {
+      video.src = URL.createObjectURL(stream);
+    },
+    function (e) {
+      console.log(e)
+    }
+
+  );
+
+  photo.onload = function() {
+    canvas.width = photo.width;
+    canvas.height = photo.height;
+    ctx.drawImage(photo,0,0);
+
+    var imagedata = ctx.getImageData(0, 0, canvas.width, canvas.height)
+    var pixels = imagedata.data;
+    //新しいImageDataをつくる
+    var newImageData = ctx.createImageData(canvas.width, canvas.height)
+    var newPixels = newImageData.data;
+//for文ですべてのピクセルにアクセス、変更する
+    for(var i=0, l=pixels.length; i<l; i+=4) {
+      var r = pixels[i];
+      var g = pixels[i+1];
+      var b = pixels[i+2];
+      var a = pixels[i+3];
+      var av = (r+g+b)/3;
+      newPixels[i] = 255;
+      newPixels[i+1] = g;
+      newPixels[i+2] = b;
+      newPixels[i+3] = a;
+    }
+    ctx.putImageData(newImageData, 0, 0)//左上からいれていく
+}
+</script>
+</html>

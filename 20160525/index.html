@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>Document</title>
+</head>
+<body>
+  <canvas width="800" height="800" id="canvas"></canvas>
+
+  <script>
+  var canvas = document.getElementById("canvas")
+  var ctx = canvas.getContext("2d"); //2dコンテキストというオブジェクトを得る
+
+  /*ctx.fillStyle = "#00f"
+  ctx.fillRect(10,10,100,100)
+  ctx.lineWidth = 5;
+  ctx.strokeStyle = "#f00"
+  ctx.strokeRect(10,10,100,100)*/
+  var x = 0;
+
+  //cos, sin, -sin, cos
+
+  var fireballs = []
+  for (var i=0; i<10; i++) {
+    var fb = new Fireball();
+    fb.x = Math.random()*800
+    fb.y = Math.random()*800
+    fb.rotate =Math.random()*360
+    fb.rotatev = Math.random()*2-1
+    fb.vx = Math.random()*2-1
+    fb.vy = Math.random()*2-1
+    fireballs.push(fb); //配列に入れる
+  }
+
+  var fire = new Image();
+  fire.src ="img/fire.png"
+  fire.onload = function () {
+    update();
+  }
+
+
+  function update() {
+    //まずfor文で全部のfireballをよぶ
+    ctx.clearRect(0,0,800,800)
+    ctx.save()
+    for (var i=0; i<10; i++) {
+      var fb =fireballs[i];
+      var sin = Math.sin(fb.rotate)
+      var cos = Math.cos(fb.rotate)
+      fb.x += fb.vx //x座標にvxの値を加算
+      fb.y += fb.vy
+      fb.rotate+=fb.rotatev
+      ctx.save()
+      ctx.setTransform(cos,sin,-sin,cos,fb.x,fb.y)
+      ctx.drawImage(fire, -25, -25)
+      ctx.restore()
+    }
+    requestAnimationFrame(update)//毎フレーム呼ばれる
+  }
+/*  function update () {
+    ctx.clearRect(0,0,800,800)
+    x++;
+    var sin = Math.sin(x*0.1)
+    var cos = Math.cos(x*0.1)
+    ctx.save()//大事
+    ctx.setTransform(cos, sin, -sin, cos, x, 100); //横の伸縮率（１） 縦の伸縮率（４）
+    //ctx.fillRect(-50,-50,100,100)
+    ctx.drawImage(fire,-25,-25);
+    ctx.restore()//大事
+    requestAnimationFrame(update)
+  } */
+
+  //update()
+
+  function Fireball() {
+    this.x;
+    this.y;
+    this.rotate;
+    this.rotatev;
+    this.vx;
+    this.vy;
+  }
+
+  </script>
+
+</body>
+</html>

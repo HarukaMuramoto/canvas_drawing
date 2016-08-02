@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Document</title>
+</head>
+<body>
+  <style>
+  #canvas {
+    border: 1px rgb(249, 187, 155) solid;
+  }
+  #canvas4 {
+    background-color: #000000;
+  }
+
+  </style>
+
+  <canvas id="canvas" width="600" height="200"></canvas>
+  <canvas id="canvas2" width="600" height="200"></canvas>
+  <canvas id="canvas3" width="600" height="200"></canvas>
+  <canvas id="canvas4" width="600" height="200"></canvas>
+
+  <script>
+
+  window.onload=function() {
+  var canvas = document.getElementById("canvas");
+  var canvas2 = document.getElementById("canvas2");
+  //var canvas3 = document.getElementById("canvas");
+  //var canvas4 = document.getElementById("canvas2");
+  var ctx = canvas.getContext('2d');
+  var ctx2 = canvas2.getContext('2d');
+  //var ctx3 = canvas3.getContext('2d');
+  //var ctx4 = canvas4.getContext('2d');
+
+  var speed = 100;    //移動速度
+  var x = 0;      //X軸の位置
+
+  // ループ処理
+  function loop() {
+      requestAnimFrame(loop);
+      ctx.clearRect(0,0, ctx.canvas.width, ctx.canvas.height);
+      // ループ毎にxを加算
+      x += (500-x)/speed;
+      // 丸を描画
+      drawCircle(x, 100, 20, '#D0A869');
+
+      if (x > 600) x = 0;
+  }
+
+
+  function drawCircle(x, y, scale, color) {
+      ctx.beginPath();
+      ctx.arc(x, y, scale, 0, 2*Math.PI, false);
+      ctx.fillStyle = color;
+      ctx.fill();
+  }
+
+  window.requestAnimFrame = (function(){
+      return  window.requestAnimationFrame   ||
+          window.webkitRequestAnimationFrame ||
+          window.mozRequestAnimationFrame    ||
+          window.oRequestAnimationFrame      ||
+          window.msRequestAnimationFrame     ||
+          function(callback){
+          window.setTimeout(callback, 1000 / 60);
+          };
+  })();
+
+  loop();
+//canvas2の描画
+    ctx2.globalAlpha = 0.5;
+
+    ctx2.beginPath();
+    ctx2.fillStyle = '#76cd76';
+    ctx2.arc(150, 150, 50, 0, 2*Math.PI, true);
+    ctx2.fill();
+
+    ctx2.beginPath();
+    ctx2.fillStyle = '#e891c3';
+    ctx2.arc(200, 150, 50, 0, 2*Math.PI, true);
+    ctx2.fill();
+
+//canvas3の描画
+function draw(){
+        var canvas3 = document.getElementById('canvas3');
+        if (canvas3.getContext){
+            var ctx3 = canvas3.getContext('2d');
+            //全体の透明度
+            ctx3.globalAlpha = 0.3;
+            //1000回処理をくりかえす
+            for(i = 0; i < 1000; i++){
+                ctx3.beginPath();
+                //ランダムな色を生成
+                var r = Math.floor(Math.random() * 256);
+                var g = Math.floor(Math.random() * 256);
+                var b = Math.floor(Math.random() * 256);
+                ctx3.strokeStyle = 'rgb(' + r + ',' + g + ',' + b + ')';
+                //ランダムな場所に始点を移動
+                ctx3.moveTo(Math.random()*500, Math.random()*200);
+                //ランダムな場所まで線を描く
+                ctx3.lineTo(Math.random()*500, Math.random()*200);
+                ctx3.stroke();
+            }
+        }
+    }
+    draw();
+
+//canvas4の描画
+    var speedX = 3.0;
+    var speedY = 4.0;
+    var lcaX = 200;
+    var lcaY = 150;
+
+    init();
+
+    function init() {
+      var canvas4 = document.getElementById('canvas4');
+      if(canvas4.getContext) {
+        ctx4=canvas4.getContext('2d');
+        setInterval(draw4, 33);
+      }
+    }
+
+    function draw4() {
+      ctx4.glovalCompositeOperation = 'source-over';
+      ctx4.fillStyle = "rgba(8, 8, 12, .2)";
+      ctx4.fillRect(0, 0, 500, 200);
+      ctx4.globalCompositeOperation = 'lighter';
+
+      //位置を更新
+      lcaX += speedX;
+      lcaY += speedY;
+
+      if(lcaX <0 || lcaX >500) {
+        speedX *= -1;
+      }
+
+      if(lcaY <0 || lcaY>200) {
+        speedY *= -1;
+      }
+
+      //更新した座標で円を描く
+      ctx4.beginPath();
+      ctx4.fillStyle = '#3399FF';
+      ctx4.arc(lcaX, lcaY, 4, 0, 2*Math.PI, true);
+      ctx4.fill;
+    }
+
+
+
+
+  };
+
+
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>Document</title>
+</head>
+<body>
+  <img src="img/fire.png" alt="">
+
+  <script>
+  var fire = new Image()
+  fire.src = "img/fire.png" //読み込みまで待ってあげる必要がある
+  fire.onload = function() {
+    document.body.appendChild(fire)
+  }
+  </script>
+
+</body>
+</html>
